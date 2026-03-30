@@ -7,4 +7,5 @@ export const routes: Routes = [
   {path:'', component: Home},
   {path:'nova/:numeroConta', component: NovaTransferencia},
   {path:'transferencias/:numeroConta', component: Transferencias},
+  {path:'**',redirectTo:'', component: Home},
 ];
