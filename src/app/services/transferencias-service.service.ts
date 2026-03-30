@@ -13,9 +13,7 @@ export class TransferenciasService {
   private readonly API_BASE = `${environment.context}/transferencias`;
 
   cadastrar(transferenciaDto: TransferenciaDto): Observable<any> {
-    console.log(`${this.API_BASE}/nova`);
-    console.log('Transferencia DTO:', transferenciaDto);
-    return this.httpClient.post(`${this.API_BASE}/nova`, transferenciaDto);
+    const url = `${this.API_BASE}/nova`;
+    return this.httpClient.post(url, transferenciaDto);
   }
-
 }

@@ -18,3 +18,15 @@ mat-card {
   font-weight: bold;
   padding: 25px 0px;
 }
+
+.deposito{
+  color:blue,
+}
+.saque{
+  color:red,
+}
+
+.bt-nova{
+  padding-left: 20px;
+  padding-bottom: 20px;
+}

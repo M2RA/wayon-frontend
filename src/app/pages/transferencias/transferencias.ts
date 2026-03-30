@@ -1,6 +1,13 @@
-import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { OperacoesService } from './../../services/operacoes-service.service';
+import { OperacaoFinanceiraResponseDto } from '../../assets/utils/operaco-financeira-response-dto';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 export interface PeriodicElement {
   name: string;
@@ -26,15 +33,86 @@ const ELEMENT_DATA: PeriodicElement[] = [
   selector: 'app-transferencias',
   imports: [
     MatTableModule,
-    MatCardModule
-  ],
+    MatCardModule,
+    MatButtonModule,
+    CommonModule
+],
   templateUrl: './transferencias.html',
   styleUrl: './transferencias.css',
 })
-export class Transferencias {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+export class Transferencias implements OnInit{
+  constructor(private operacoesService:OperacoesService,
+              private snackBar: MatSnackBar,
+              private route: ActivatedRoute,
+              private router: Router
+  ){
+
+  }
+
+  numeroConta!:string;
+
+  displayedColumns: string[] = ['tipoOperacao','valorOperacao','saldoInstantaneo','dataAgendamento','dataExecucao','observacao'];
+  dataSource = new MatTableDataSource<OperacaoFinanceiraResponseDto>;
+  extratos:OperacaoFinanceiraResponseDto[] = [];
 
   titulo:string = "Transferências";
 
+  ngOnInit(){
+    this.route.paramMap.subscribe(param =>{
+      this.numeroConta = param.get('numeroConta') ?? '';
+    })
+    this.getExtrato();
+  }
+
+  getExtrato(){
+    this.operacoesService.getExtrato(this.numeroConta).subscribe({
+      next: (response) => {
+        response.forEach(r => {
+          let registro:OperacaoFinanceiraResponseDto = {
+            id: r.id,
+            tipoOperacao: r.tipoOperacao,
+            numeroConta: r.numeroConta,
+            valorOperacao: this.aplicaMascaraMoeda(r.tipoOperacao,r.valorOperacao),
+            saldoInstantaneo: this.aplicaMascaraMoeda(r.tipoOperacao,r.saldoInstantaneo),
+            dataAgendamento: this.aplicarMascaraDatas(r.dataAgendamento),
+            dataExecucao: this.aplicarMascaraDatas(r.dataExecucao),
+            observacao: r.observacao
+          }
+          this.extratos.push(registro);
+        })
+        this.dataSource.data = this.extratos;
+      }, error: (error: HttpErrorResponse)  => {
+        console.log('Erro ao obter extrato:', error.error);
+          this.snackBar.open(error.error || 'Erro ao obter extrato. Contate o suporte.', "Fechar", {
+            duration: 10000,
+            panelClass: ['snackbar-error'],
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          });
+        }
+
+    })
+  }
+
+  criarNovaTransferencia(){
+      this.router.navigate([`nova`]);
+  }
+
+  aplicaMascaraMoeda(tipo:string, valor: string){
+    let retorno = tipo === 'SAQUE' ? `(R$ ${valor})` : `+ R$ ${valor}`
+    return retorno;
+  }
+
+  aplicarMascaraDatas(valor: string){
+    let data: Date = new Date(valor);
+    return data.toLocaleString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false // Formato 24h
+    });
+  }
 }

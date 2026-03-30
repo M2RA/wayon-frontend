@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -28,7 +28,7 @@ providers: [provideNgxMask()],
   templateUrl: './nova-transferencia.html',
   styleUrl: './nova-transferencia.css',
 })
-export class NovaTransferencia {
+export class NovaTransferencia implements OnInit {
     constructor(private fb: FormBuilder,
               private transferciasService: TransferenciasService,
               private snackBar: MatSnackBar
@@ -77,7 +77,7 @@ export class NovaTransferencia {
           });
         this.cadastroTransferencias.reset();
       }, error: (error: HttpErrorResponse) => {
-        console.error('Erro ao cadastrar transferência:', error.error);
+        console.log('Erro ao cadastrar transferência:', error.error);
           this.snackBar.open(error.error || 'Erro ao cadastrar transferência. Verifique dados informados', "Fechar", {
             duration: 10000,
             panelClass: ['snackbar-error'],
