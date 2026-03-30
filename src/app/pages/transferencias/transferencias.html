@@ -3,10 +3,19 @@
     <mat-card-header>
       <mat-card-title class="titulo">{{ titulo }}</mat-card-title>
     </mat-card-header>
-    <div class="bt-nova">
-      <button mat-raised-button color="primary" (click)="criarNovaTransferencia()">
-        Nova Transferência
-      </button>
+    <div>
+      <div style="display: flex;padding-left: 20px;">
+        <div class="bt-nova">
+          <button mat-raised-button color="primary" (click)="criarNovaTransferencia()">
+            Nova Transferência
+          </button>
+        </div>
+        <div class="bt-sair">
+          <button mat-raised-button color="primary" (click)="sair()">
+            Sair
+          </button>
+        </div>
+      </div>
     </div>
     <mat-card-content>
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >

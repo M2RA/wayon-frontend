@@ -49,11 +49,11 @@ export class Transferencias implements OnInit{
 
   }
 
-  numeroConta!:string;
 
   displayedColumns: string[] = ['tipoOperacao','valorOperacao','saldoInstantaneo','dataAgendamento','dataExecucao','observacao'];
   dataSource = new MatTableDataSource<OperacaoFinanceiraResponseDto>;
   extratos:OperacaoFinanceiraResponseDto[] = [];
+  numeroConta!:string;
 
   titulo:string = "Transferências";
 
@@ -95,7 +95,7 @@ export class Transferencias implements OnInit{
   }
 
   criarNovaTransferencia(){
-      this.router.navigate([`nova`]);
+      this.router.navigate([`nova/${this.numeroConta}`]);
   }
 
   aplicaMascaraMoeda(tipo:string, valor: string){
@@ -114,5 +114,9 @@ export class Transferencias implements OnInit{
     second: '2-digit',
     hour12: false // Formato 24h
     });
+  }
+
+  sair(){
+    this.router.navigate([``]);
   }
 }

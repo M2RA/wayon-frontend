@@ -12,6 +12,7 @@ import { EnumTipoOperacao } from '../../assets/utils/enum-tipo-operacao';
 import { OperacaoFinanceiraDTO } from '../../assets/utils/operacao-financeira-dto';
 import { TransferenciasService } from '../../services/transferencias-service.service';
 import { TransferenciaDto } from './../../assets/utils/transferencia-dto';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-nova-transferencia',
@@ -31,14 +32,19 @@ providers: [provideNgxMask()],
 export class NovaTransferencia implements OnInit {
     constructor(private fb: FormBuilder,
               private transferciasService: TransferenciasService,
-              private snackBar: MatSnackBar
+              private snackBar: MatSnackBar,
+              private router: Router,
+              private route: ActivatedRoute
   ) {}
   cadastroTransferencias!: FormGroup;
   titulo: string = "Nova Transferência";
+  numeroConta!: string;
 
   ngOnInit() {
+    this.route.paramMap.subscribe(param =>{
+      this.numeroConta = param.get('numeroConta') ?? '';
+    })
     this.cadastroTransferencias = this.fb.group({
-      contaOrigem: ['',[Validators.maxLength(10)]],
       contaDestino: ['',[Validators.maxLength(10)]],
       valorOperacao: ['', [Validators.required, Validators.min(0.01)]],
       dataExecucao: ['',],
@@ -49,7 +55,7 @@ export class NovaTransferencia implements OnInit {
   cadastrar() {
     let saida: OperacaoFinanceiraDTO = {
       tipoOperacao: EnumTipoOperacao.SAQUE,
-      contaCorrente: this.cadastroTransferencias.value.contaOrigem,
+      contaCorrente: this.numeroConta,
       valorOperacao: this.cadastroTransferencias.value.valorOperacao,
       dataExecucao: this.cadastroTransferencias.value.dataExecucao
     };
@@ -86,5 +92,11 @@ export class NovaTransferencia implements OnInit {
           });
       }
     });
+  }
+  consultarTransferencias(){
+    this.router.navigate([`transferencias/${this.numeroConta}`]);
+  }
+  sair(){
+    this.router.navigate([``]);
   }
 }
