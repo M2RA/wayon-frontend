@@ -1,0 +1,20 @@
+/* table {
+  width: 100%;
+} */
+
+.container-principal {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+mat-card {
+  max-width: 1000px;
+  width: 100%;
+}
+
+.titulo {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 25px 0px;
+}

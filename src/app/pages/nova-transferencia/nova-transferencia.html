@@ -1,0 +1,36 @@
+<div class="container-cadastro">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title class="titulo">{{ titulo }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="cadastroTransferencias" (ngSubmit)="cadastrar()">
+        <mat-form-field appearance="fill" class="campo-input-esquerdo">
+          <mat-label>Conta de Origem</mat-label>
+          <input matInput formControlName="contaOrigem" maxlength="10">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="campo-input-central">
+          <mat-label>Conta de Destino</mat-label>
+          <input matInput formControlName="contaDestino" maxlength="10">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="campo-input-central">
+          <mat-label>Valor</mat-label>
+          <input matInput type="number" formControlName="valorOperacao" step="0.01" placeholder="Ex: 100.00">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="campo-input-direito">
+          <mat-label>Data de Execução</mat-label>
+          <input matInput type="date" formControlName="dataExecucao">
+        </mat-form-field>
+
+        <mat-card-actions style="margin-top: 20px;padding-left: 25px;">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!cadastroTransferencias.valid">
+            Cadastrar
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,32 @@
+.container-cadastro {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+mat-card {
+  max-width: 1000px;
+  width: 100%;
+}
+
+.titulo {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 25px 25px;
+}
+
+.campo-input-esquerdo{
+  width: 20%;
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+}
+.campo-input-central{
+  width: 20%;
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+}
+
+.campo-input-direito{
+  width: 20%;
+  padding-left: 2.5%;
+}
