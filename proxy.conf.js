@@ -4,6 +4,12 @@ const PROXY_CONFIG = [
     target: `http://localhost:8080`,
     secure: false,
     logLevel: 'debug'
+  },
+  {
+    context: [`/api/v1/wayon`],
+    target: `http://localhost:8081`,
+    secure: false,
+    logLevel: 'debug'
   }
 ];
 
